@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOONG俱乐部管理平台</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- 登录页面 -->
+        <div id="auth-page" class="page">
+            <div class="auth-container">
+                <div class="logo">
+                    <h1>🏢 LOONG俱乐部管理平台</h1>
+                    <p>管理员专用</p>
+                </div>
+                
+                <form id="login-form" class="auth-form">
+                    <div class="form-group">
+                        <label>管理员账号</label>
+                        <input type="text" id="login-username" placeholder="请输入管理员账号" required>
+                    </div>
+                    <div class="form-group">
+                        <label>密码</label>
+                        <input type="password" id="login-password" placeholder="请输入密码" required>
+                    </div>
+                    <button type="submit" class="btn-primary">登录</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- 主页面 -->
+        <div id="main-page" class="page hidden">
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <h2>🏢 LOONG俱乐部管理</h2>
+                </div>
+                <nav class="sidebar-nav">
+                    <button class="nav-item active" onclick="showPage('dashboard')">
+                        <span class="nav-icon">📊</span>
+                        <span>数据概览</span>
+                    </button>
+                    <button class="nav-item" onclick="showPage('orders')">
+                        <span class="nav-icon">📋</span>
+                        <span>派单管理</span>
+                    </button>
+                    <button class="nav-item" onclick="showPage('punishments')">
+                        <span class="nav-icon">⚠️</span>
+                        <span>处罚打手</span>
+                    </button>
+                    <button class="nav-item" onclick="showPage('complaints')">
+                        <span class="nav-icon">📝</span>
+                        <span>投诉处理</span>
+                    </button>
+                    <button class="nav-item" onclick="showPage('announcements')">
+                        <span class="nav-icon">📢</span>
+                        <span>公告管理</span>
+                    </button>
+                    <button class="nav-item" onclick="showPage('users')">
+                        <span class="nav-icon">👥</span>
+                        <span>打手管理</span>
+                    </button>
+                </nav>
+                <div class="sidebar-footer">
+                    <span id="admin-name"></span>
+                    <button onclick="logout()" class="btn-logout">退出</button>
+                </div>
+            </aside>
+            
+            <main class="main-content">
+                <!-- 数据概览 -->
+                <div id="dashboard-page" class="content-page">
+                    <h2>📊 数据概览</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">📋</div>
+                            <div class="stat-info">
+                                <div class="stat-value" id="stat-orders">0</div>
+                                <div class="stat-label">总订单数</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">⏳</div>
+                            <div class="stat-info">
+                                <div class="stat-value" id="stat-pending">0</div>
+                                <div class="stat-label">待接单</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🔄</div>
+                            <div class="stat-info">
+                                <div class="stat-value" id="stat-ongoing">0</div>
+                                <div class="stat-label">进行中</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">👥</div>
+                            <div class="stat-info">
+                                <div class="stat-value" id="stat-users">0</div>
+                                <div class="stat-label">注册打手</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📝</div>
+                            <div class="stat-info">
+                                <div class="stat-value" id="stat-complaints">0</div>
+                                <div class="stat-label">待处理投诉</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">⚠️</div>
+                            <div class="stat-info">
+                                <div class="stat-value" id="stat-punishments">0</div>
+                                <div class="stat-label">处罚记录</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 派单管理 -->
+                <div id="orders-page" class="content-page hidden">
+                    <div class="page-header">
+                        <h2>📋 派单管理</h2>
+                        <button class="btn-primary" onclick="showCreateOrderModal()">+ 新建订单</button>
+                    </div>
+                    <div id="orders-list" class="data-list"></div>
+                </div>
+                
+                <!-- 处罚打手 -->
+                <div id="punishments-page" class="content-page hidden">
+                    <div class="page-header">
+                        <h2>⚠️ 处罚管理</h2>
+                        <button class="btn-primary" onclick="showCreatePunishmentModal()">+ 新增处罚</button>
+                    </div>
+                    <div id="punishments-list" class="data-list"></div>
+                </div>
+                
+                <!-- 投诉处理 -->
+                <div id="complaints-page" class="content-page hidden">
+                    <h2>📝 投诉处理</h2>
+                    <div id="complaints-list" class="data-list"></div>
+                </div>
+                
+                <!-- 公告管理 -->
+                <div id="announcements-page" class="content-page hidden">
+                    <div class="page-header">
+                        <h2>📢 公告管理</h2>
+                        <button class="btn-primary" onclick="showCreateAnnouncementModal()">+ 发布公告</button>
+                    </div>
+                    <div id="announcements-list" class="data-list"></div>
+                </div>
+                
+                <!-- 打手管理 -->
+                <div id="users-page" class="content-page hidden">
+                    <h2>👥 打手管理</h2>
+                    <div id="users-list" class="data-list"></div>
+                </div>
+            </main>
+        </div>
+        
+        <!-- 新建订单弹窗 -->
+        <div id="create-order-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>新建订单</h3>
+                    <button onclick="closeModal('create-order-modal')" class="btn-close">×</button>
+                </div>
+                <form id="create-order-form" class="modal-form">
+                    <div class="form-group">
+                        <label>老板ID</label>
+                        <input type="text" id="order-game-id" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>服务器</label>
+                            <select id="order-server" required>
+                                <option value="微信区">微信区</option>
+                                <option value="QQ区">QQ区</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>地图</label>
+                            <select id="order-map" required>
+                                <option value="进阶冰河">进阶冰河</option>
+                                <option value="进阶迷雾">进阶迷雾</option>
+                                <option value="进阶实验">进阶实验</option>
+                                <option value="进阶烽火">进阶烽火</option>
+                                <option value="苏尔南冲突">苏尔南冲突</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>价格（元）</label>
+                        <input type="number" id="order-price" required>
+                    </div>
+                    <div class="form-group">
+                        <label>服务要求</label>
+                        <textarea id="order-requirements" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">创建订单</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- 新增处罚弹窗 -->
+        <div id="create-punishment-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>新增处罚</h3>
+                    <button onclick="closeModal('create-punishment-modal')" class="btn-close">×</button>
+                </div>
+                <form id="create-punishment-form" class="modal-form">
+                    <div class="form-group">
+                        <label>选择打手</label>
+                        <select id="punishment-user" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label>处罚类型</label>
+                        <select id="punishment-type" required onchange="onPunishmentTypeChange()">
+                            <option value="警告">警告</option>
+                            <option value="禁单">禁单（自定义天数）</option>
+                            <option value="罚款">罚款</option>
+                            <option value="禁单+罚款">禁单+罚款</option>
+                            <option value="永久封禁">永久封禁</option>
+                        </select>
+                    </div>
+                    <div id="custom-days-group" class="form-group hidden">
+                        <label>禁单天数</label>
+                        <input type="number" id="punishment-days" min="1" max="365" placeholder="请输入禁单天数">
+                    </div>
+                    <div id="fine-amount-group" class="form-group hidden">
+                        <label>罚款金额（元）</label>
+                        <input type="number" id="punishment-fine" min="0" step="0.01" placeholder="请输入罚款金额">
+                    </div>
+                    <div class="form-group">
+                        <label>处罚原因</label>
+                        <textarea id="punishment-reason" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">确认处罚</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- 发布公告弹窗 -->
+        <div id="create-announcement-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>发布公告</h3>
+                    <button onclick="closeModal('create-announcement-modal')" class="btn-close">×</button>
+                </div>
+                <form id="create-announcement-form" class="modal-form">
+                    <div class="form-group">
+                        <label>公告标题</label>
+                        <input type="text" id="announcement-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label>公告内容</label>
+                        <textarea id="announcement-content" rows="6" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">发布公告</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- 处理投诉弹窗 -->
+        <div id="handle-complaint-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>处理投诉</h3>
+                    <button onclick="closeModal('handle-complaint-modal')" class="btn-close">×</button>
+                </div>
+                <div id="complaint-details" class="modal-body"></div>
+                <form id="handle-complaint-form" class="modal-form">
+                    <div class="form-group">
+                        <label>处理结果</label>
+                        <select id="complaint-result" required>
+                            <option value="投诉成立">投诉成立</option>
+                            <option value="投诉不成立">投诉不成立</option>
+                            <option value="需要进一步调查">需要进一步调查</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>处理备注</label>
+                        <textarea id="complaint-remark" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">提交处理</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- 罚款审核弹窗 -->
+        <div id="fine-review-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>审核罚款缴纳</h3>
+                    <button onclick="closeModal('fine-review-modal')" class="btn-close">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="detail-row">
+                        <span class="detail-label">打手</span>
+                        <span class="detail-value" id="fine-review-dasher">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">罚款金额</span>
+                        <span class="detail-value" id="fine-review-amount" style="color: #ef4444; font-weight: 600;">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">处罚原因</span>
+                        <span class="detail-value" id="fine-review-reason">-</span>
+                    </div>
+                </div>
+                <form id="fine-review-form" class="modal-form">
+                    <div class="form-group">
+                        <label>审核结果</label>
+                        <select id="fine-review-result" required>
+                            <option value="approved">✅ 审核通过（结束处罚）</option>
+                            <option value="rejected">❌ 审核不通过（重新处罚）</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>审核备注</label>
+                        <textarea id="fine-review-remark" rows="3" placeholder="请输入审核备注..."></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">提交审核</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- 订单完成审核弹窗 -->
+        <div id="order-completion-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>审核订单完成</h3>
+                    <button onclick="closeModal('order-completion-modal')" class="btn-close">×</button>
+                </div>
+                <div class="modal-body" id="order-completion-details"></div>
+                <form id="order-completion-form" class="modal-form">
+                    <div class="form-group">
+                        <label>审核结果</label>
+                        <select id="order-completion-result" required>
+                            <option value="approved">✅ 审核通过（订单完成）</option>
+                            <option value="rejected">❌ 审核不通过（打回订单）</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>审核备注</label>
+                        <textarea id="order-completion-remark" rows="3" placeholder="请输入审核备注..."></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">提交审核</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>

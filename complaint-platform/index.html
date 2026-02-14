@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>投诉平台 - LOONG俱乐部</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- 投诉表单页面 -->
+        <div class="complaint-container">
+            <div class="header-section">
+                <h1>📝 投诉平台</h1>
+                <p>LOONG俱乐部服务投诉通道</p>
+            </div>
+            
+            <form id="complaint-form" class="complaint-form">
+                <div class="form-section">
+                    <h3>📅 对局信息</h3>
+                    <div class="form-group">
+                        <label>对局时间 <span class="required">*</span></label>
+                        <input type="datetime-local" id="game-time" required>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>👤 您的信息</h3>
+                    <div class="form-group">
+                        <label>您的游戏名字 <span class="required">*</span></label>
+                        <input type="text" id="customer-name" placeholder="请输入您的游戏昵称" required>
+                    </div>
+                    <div class="form-group">
+                        <label>您的手机号 <span class="required">*</span></label>
+                        <input type="tel" id="customer-phone" placeholder="请输入您的手机号" required>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>🎮 打手信息</h3>
+                    <div class="form-group">
+                        <label>打手游戏名称 <span class="required">*</span></label>
+                        <input type="text" id="dasher-name" placeholder="请输入打手的游戏昵称" required>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>📝 投诉详情</h3>
+                    <div class="form-group">
+                        <label>投诉理由 <span class="required">*</span></label>
+                        <textarea id="complaint-reason" rows="5" placeholder="请详细描述您遇到的问题..." required></textarea>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>⚖️ 处理选项</h3>
+                    <div class="form-group checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="need-chairman">
+                            <span class="checkmark"></span>
+                            <span class="checkbox-text">申请董事长介入处理</span>
+                        </label>
+                        <p class="checkbox-hint">勾选后，您的投诉将由董事长亲自处理</p>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-submit">提交投诉</button>
+            </form>
+            
+            <!-- 提交成功提示 -->
+            <div id="success-message" class="success-message hidden">
+                <div class="success-icon">✅</div>
+                <h3>投诉提交成功！</h3>
+                <p>我们会尽快处理您的投诉，请保持手机畅通。</p>
+                <button onclick="resetForm()" class="btn-secondary">继续提交新投诉</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>

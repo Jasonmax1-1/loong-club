@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOONG俱乐部 - 打手接单平台</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- 登录/注册页面 -->
+        <div id="auth-page" class="page">
+            <div class="auth-container">
+                <div class="logo">
+                    <h1>🎮 LOONG俱乐部</h1>
+                    <p>专业打手接单平台</p>
+                </div>
+                
+                <div class="auth-tabs">
+                    <button class="tab-btn active" onclick="switchTab('login')">登录</button>
+                    <button class="tab-btn" onclick="switchTab('register')">注册</button>
+                </div>
+                
+                <!-- 登录表单 -->
+                <form id="login-form" class="auth-form">
+                    <div class="form-group">
+                        <label>手机号</label>
+                        <input type="tel" id="login-phone" placeholder="请输入手机号" required>
+                    </div>
+                    <div class="form-group">
+                        <label>密码</label>
+                        <input type="password" id="login-password" placeholder="请输入密码" required>
+                    </div>
+                    <button type="submit" class="btn-primary">登录</button>
+                </form>
+                
+                <!-- 注册表单 -->
+                <form id="register-form" class="auth-form hidden">
+                    <div class="form-group">
+                        <label>手机号</label>
+                        <input type="tel" id="reg-phone" placeholder="请输入手机号" required>
+                    </div>
+                    <div class="form-group">
+                        <label>密码</label>
+                        <input type="password" id="reg-password" placeholder="请输入密码" required>
+                    </div>
+                    <div class="form-group">
+                        <label>确认密码</label>
+                        <input type="password" id="reg-confirm" placeholder="请再次输入密码" required>
+                    </div>
+                    <div class="form-group">
+                        <label>邀请码</label>
+                        <input type="text" id="reg-invite" placeholder="请输入邀请码" required>
+                    </div>
+                    <button type="submit" class="btn-primary">注册</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- 主页面 -->
+        <div id="main-page" class="page hidden">
+            <header class="header">
+                <div class="header-left">
+                    <h2>🎮 LOONG俱乐部</h2>
+                </div>
+                <div class="header-right">
+                    <span id="user-name"></span>
+                    <button onclick="logout()" class="btn-logout">退出</button>
+                </div>
+            </header>
+            
+            <nav class="nav-bar">
+                <button class="nav-item active" onclick="showPage('orders')">
+                    <span class="nav-icon">📋</span>
+                    <span>接单大厅</span>
+                </button>
+                <button class="nav-item" onclick="showPage('my-orders')">
+                    <span class="nav-icon">📦</span>
+                    <span>我的订单</span>
+                </button>
+                <button class="nav-item" onclick="showPage('rejected-orders')">
+                    <span class="nav-icon">🚫</span>
+                    <span>拒单订单</span>
+                </button>
+                <button class="nav-item" onclick="showPage('punishments')">
+                    <span class="nav-icon">⚠️</span>
+                    <span>处罚记录</span>
+                </button>
+                <button class="nav-item" onclick="showPage('announcements')">
+                    <span class="nav-icon">📢</span>
+                    <span>公告</span>
+                </button>
+            </nav>
+            
+            <main class="main-content">
+                <!-- 接单大厅 -->
+                <div id="orders-page" class="content-page">
+                    <h3>📋 接单大厅</h3>
+                    <div id="orders-list" class="orders-list"></div>
+                </div>
+                
+                <!-- 我的订单 -->
+                <div id="my-orders-page" class="content-page hidden">
+                    <h3>📦 我的订单</h3>
+                    <div id="my-orders-list" class="orders-list"></div>
+                </div>
+                
+                <!-- 拒单订单 -->
+                <div id="rejected-orders-page" class="content-page hidden">
+                    <h3>🚫 拒单订单</h3>
+                    <div id="rejected-orders-list" class="orders-list"></div>
+                </div>
+                
+                <!-- 处罚记录 -->
+                <div id="punishments-page" class="content-page hidden">
+                    <h3>⚠️ 我的处罚记录</h3>
+                    <div id="punishments-list" class="punishments-list"></div>
+                </div>
+                
+                <!-- 公告 -->
+                <div id="announcements-page" class="content-page hidden">
+                    <h3>📢 平台公告</h3>
+                    <div id="announcements-list" class="announcements-list"></div>
+                </div>
+            </main>
+        </div>
+        
+        <!-- 订单详情弹窗 -->
+        <div id="order-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>订单详情</h3>
+                    <button onclick="closeModal()" class="btn-close">×</button>
+                </div>
+                <div id="order-details" class="modal-body"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>

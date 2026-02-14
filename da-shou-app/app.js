@@ -13,33 +13,9 @@ let realtimeUpdateInterval = null;
 
 // 初始化数据
 function initData() {
-    // 初始化示例订单
+    // 初始化订单（空数组，不创建测试订单）
     if (!localStorage.getItem(STORAGE_KEYS.ORDERS)) {
-        const sampleOrders = [
-            {
-                id: 'ORD' + Date.now(),
-                gameId: 'Gamer123456',
-                server: '微信区',
-                map: '进阶冰河',
-                requirements: '护送撤离，保护装备',
-                price: 50,
-                status: 'pending',
-                createdAt: new Date().toISOString(),
-                acceptedBy: null
-            },
-            {
-                id: 'ORD' + (Date.now() + 1),
-                gameId: 'Gamer654321',
-                server: 'QQ区',
-                map: '进阶迷雾',
-                requirements: '全程护航，清图',
-                price: 100,
-                status: 'pending',
-                createdAt: new Date().toISOString(),
-                acceptedBy: null
-            }
-        ];
-        localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(sampleOrders));
+        localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify([]));
     }
     
     // 初始化示例公告

@@ -591,6 +591,9 @@ function loadRejectedOrders() {
             actionButton = '';
         }
         
+        // 永久删除拒单记录按钮
+        const deleteRejectButton = `<button class="btn-small btn-delete" onclick="deleteRejectRecord('${order.id}')">删除记录</button>`;
+        
         return `
         <div class="order-card">
             <div class="order-header">
@@ -615,9 +618,37 @@ function loadRejectedOrders() {
             <div class="order-actions">
                 <button class="btn-small btn-view" onclick="viewOrder('${order.id}')">查看详情</button>
                 ${actionButton}
+                ${deleteRejectButton}
             </div>
         </div>
     `}).join('');
+}
+
+// 永久删除拒单记录（从拒单列表中移除，但不影响订单本身）
+function deleteRejectRecord(orderId) {
+    if (!confirm('确定要删除这条拒单记录吗？删除后将不再显示在拒单订单列表中。')) return;
+    
+    let orders = getStorageData(STORAGE_KEYS.ORDERS);
+    const orderIndex = orders.findIndex(o => o.id === orderId);
+    
+    if (orderIndex === -1) {
+        alert('订单不存在！');
+        return;
+    }
+    
+    const currentUser = JSON.parse(localStorage.getItem(STORAGE_KEYS.CURRENT_USER));
+    
+    // 从拒单列表中移除当前用户
+    if (orders[orderIndex].rejectedBy && Array.isArray(orders[orderIndex].rejectedBy)) {
+        orders[orderIndex].rejectedBy = orders[orderIndex].rejectedBy.filter(
+            r => r.userId !== currentUser.id
+        );
+    }
+    
+    setStorageData(STORAGE_KEYS.ORDERS, orders);
+    
+    alert('拒单记录已删除！');
+    loadRejectedOrders();
 }
 
 // 恢复订单（从拒单列表中移除）
